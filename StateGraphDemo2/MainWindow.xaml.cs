@@ -130,7 +130,7 @@ namespace StateGraphDemo2
             check.Transitions.Add(
                 new Transition
                 {
-                    Condition = "NG",
+                    Condition = "OK",
                     Target = error
                 });
 
@@ -374,6 +374,43 @@ namespace StateGraphDemo2
             Canvas.SetTop(txt, midY - 10);
 
             GraphCanvas.Children.Add(txt);
+
+            //Polygon arrow = new();
+            //arrow.Points = new PointCollection
+            //{
+            //    new Point(x2 - 5, y2 - 10),
+            //    new Point(x2 + 5, y2 - 10),
+            //    new Point(x2, y2)
+            //};
+
+            //arrow.Fill = Brushes.Gray;
+            //GraphCanvas.Children.Add(arrow);
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            _ = DemoAsync();
+        }
+
+        private async Task DemoAsync()
+        {
+            while (true)
+            {
+                await Task.Delay(100);
+                machine.Trigger("Start");
+
+                await Task.Delay(100);
+                machine.Trigger("OK");
+
+                await Task.Delay(100);
+                machine.Trigger("Done");
+
+                await Task.Delay(100);
+                machine.Trigger("Error Action2 Done");
+
+                await Task.Delay(100);
+                machine.Trigger("Reset");
+            }
         }
     }
 }
