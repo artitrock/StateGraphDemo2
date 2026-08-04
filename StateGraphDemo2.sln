@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.37502.11 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StateGraphDemo2", "StateGraphDemo2\StateGraphDemo2.csproj", "{1D6C3996-659E-44C3-A14E-0CDE4FC03959}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1D6C3996-659E-44C3-A14E-0CDE4FC03959}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D6C3996-659E-44C3-A14E-0CDE4FC03959}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D6C3996-659E-44C3-A14E-0CDE4FC03959}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D6C3996-659E-44C3-A14E-0CDE4FC03959}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {275F2BF0-B9BF-481C-AD36-90CAEB8C91F0}
+	EndGlobalSection
+EndGlobal
