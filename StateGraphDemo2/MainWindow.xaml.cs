@@ -170,6 +170,13 @@ namespace StateGraphDemo2
                     Target = finish
                 });
 
+            finish.Transitions.Add(
+                new Transition
+                {
+                    Condition = "Reset",
+                    Target = idle
+                });
+
 
 
             return new StateMachine(idle);
@@ -203,58 +210,56 @@ namespace StateGraphDemo2
 
 
 
-                    Line line = new();
+                    //Line line = new();
 
 
-                    line.X1 =
-                        n.X + 60;
+                    //line.X1 =
+                    //    n.X + 60;
 
 
-                    line.Y1 =
-                        n.Y + 50;
+                    //line.Y1 =
+                    //    n.Y + 50;
 
 
-                    line.X2 =
-                        target.X + 60;
+                    //line.X2 =
+                    //    target.X + 60;
 
 
-                    line.Y2 =
-                        target.Y;
+                    //line.Y2 =
+                    //    target.Y;
 
 
-                    //add condition text in the middle of the line
-                    TextBlock condition = new();
-
-                    condition.Text = t.Condition;
-
-                    condition.Foreground =
-                        Brushes.Blue;
+                    //line.Stroke =
+                    //    Brushes.Gray;
 
 
-                    Canvas.SetLeft(
-                        condition,
-                        (line.X1 + line.X2) / 2);
+                    //line.StrokeThickness = 2;
 
 
-                    Canvas.SetTop(
-                        condition,
-                        (line.Y1 + line.Y2) / 2);
+                    //GraphCanvas.Children.Add(line);
+
+                    ////add condition text in the middle of the line
+                    //TextBlock condition = new();
+
+                    //condition.Text = t.Condition;
+
+                    //condition.Foreground =
+                    //    Brushes.Blue;
 
 
-                    GraphCanvas.Children.Add(condition);
-                    //
+                    //Canvas.SetLeft(
+                    //    condition,
+                    //    (line.X1 + line.X2) / 2);
 
 
-
-                    line.Stroke =
-                        Brushes.Gray;
-
-
-                    line.StrokeThickness = 2;
+                    //Canvas.SetTop(
+                    //    condition,
+                    //    (line.Y1 + line.Y2) / 2);
 
 
-                    GraphCanvas.Children.Add(line);
-
+                    //GraphCanvas.Children.Add(condition);
+                    ////
+                    DrawSmoothConnection(n, target, t.Condition);
                 }
 
             }
@@ -323,6 +328,52 @@ namespace StateGraphDemo2
             }
 
 
+        }
+
+        private void DrawSmoothConnection(
+    GraphNode from,
+    GraphNode to,
+    string condition)
+        {
+            double x1 = from.X + 60;
+            double y1 = from.Y + 50;
+
+            double x2 = to.X + 60;
+            double y2 = to.Y;
+
+            // จุดควบคุม Bezier
+            double midY = (y1 + y2) / 2;
+
+            PathFigure figure = new();
+            figure.StartPoint = new Point(x1, y1);
+
+            figure.Segments.Add(
+                new BezierSegment(
+                    new Point(x1, midY),
+                    new Point(x2, midY),
+                    new Point(x2, y2),
+                    true));
+
+            PathGeometry geometry = new();
+            geometry.Figures.Add(figure);
+
+            Path path = new();
+            path.Data = geometry;
+            path.Stroke = Brushes.Gray;
+            path.StrokeThickness = 2;
+
+            GraphCanvas.Children.Add(path);
+
+            // condition label
+            TextBlock txt = new();
+            txt.Text = condition;
+            txt.Foreground = Brushes.Blue;
+            txt.Background = Brushes.White;
+
+            Canvas.SetLeft(txt, (x1 + x2) / 2 + 5);
+            Canvas.SetTop(txt, midY - 10);
+
+            GraphCanvas.Children.Add(txt);
         }
     }
 }
