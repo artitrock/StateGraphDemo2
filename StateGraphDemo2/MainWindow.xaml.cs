@@ -119,7 +119,7 @@ namespace StateGraphDemo2
             }
         }
 
-        private void DrawSmoothConnection( GraphNode from, GraphNode to, string condition)
+        private void DrawSmoothConnection(GraphNode from, GraphNode to, string condition)
         {
             double x1 = from.X + 60;
             double y1 = from.Y + 50;
@@ -127,51 +127,131 @@ namespace StateGraphDemo2
             double x2 = to.X + 60;
             double y2 = to.Y;
 
-            // จุดควบคุม Bezier
-            double midY = (y1 + y2) / 2;
+            // ระยะเส้นตรงออกจากต้นทาง
+            double exit = 20;
 
-            PathFigure figure = new();
-            figure.StartPoint = new Point(x1, y1);
+            // ระยะเส้นตรงก่อนเข้าปลายทาง
+            double entry = 20;
 
+            PathFigure figure = new()
+            {
+                StartPoint = new Point(x1, y1),
+                IsClosed = false
+            };
+
+            // 1. เส้นตรงออกจากกล่องต้นทาง
+            figure.Segments.Add(
+                new LineSegment(
+                    new Point(x1, y1 + exit),
+                    true));
+
+            // 2. เส้นโค้ง
             figure.Segments.Add(
                 new BezierSegment(
-                    new Point(x1, midY),
-                    new Point(x2, midY),
+                    new Point(x1, y1 + exit + 50),
+                    new Point(x2, y2 - entry - 50),
+                    new Point(x2, y2 - entry),
+                    true));
+
+            // 3. เส้นตรงเข้ากล่องปลายทาง
+            figure.Segments.Add(
+                new LineSegment(
                     new Point(x2, y2),
                     true));
 
-            PathGeometry geometry = new();
-            geometry.Figures.Add(figure);
-
-            Path path = new();
-            path.Data = geometry;
-            path.Stroke = Brushes.Gray;
-            path.StrokeThickness = 2;
+            Path path = new()
+            {
+                Data = new PathGeometry(new[] { figure }),
+                Stroke = Brushes.Gray,
+                StrokeThickness = 2
+            };
 
             GraphCanvas.Children.Add(path);
 
-            // condition label
-            TextBlock txt = new();
-            txt.Text = condition;
-            txt.Foreground = Brushes.Blue;
-            txt.Background = Brushes.White;
+            // Condition
+            TextBlock txt = new()
+            {
+                Text = condition,
+                Background = Brushes.White,
+                Foreground = Brushes.Blue,
+                Padding = new Thickness(2)
+            };
 
-            Canvas.SetLeft(txt, (x1 + x2) / 2 + 5);
-            Canvas.SetTop(txt, midY - 10);
+            Canvas.SetLeft(txt, (x1 + x2) / 2);
+            Canvas.SetTop(txt, (y1 + y2) / 2 - 20);
 
             GraphCanvas.Children.Add(txt);
 
-            //Polygon arrow = new();
-            //arrow.Points = new PointCollection
-            //{
-            //    new Point(x2 - 5, y2 - 10),
-            //    new Point(x2 + 5, y2 - 10),
-            //    new Point(x2, y2)
-            //};
+            // หัวลูกศร (ถ้าต้องการ)
+            
+            Polygon arrow = new()
+            {
+                Fill = Brushes.Gray,
+                Points = new PointCollection
+                {
+                    new Point(x2 - 5, y2 - 8),
+                    new Point(x2 + 5, y2 - 8),
+                    new Point(x2, y2)
+                }
+            };
 
-            //arrow.Fill = Brushes.Gray;
-            //GraphCanvas.Children.Add(arrow);
+            GraphCanvas.Children.Add(arrow);
+            
         }
+
+        //private void DrawSmoothConnection( GraphNode from, GraphNode to, string condition)
+        //{
+        //    double x1 = from.X + 60;
+        //    double y1 = from.Y + 50;
+
+        //    double x2 = to.X + 60;
+        //    double y2 = to.Y;
+
+        //    // จุดควบคุม Bezier
+        //    double midY = (y1 + y2) / 2;
+
+        //    PathFigure figure = new();
+        //    figure.StartPoint = new Point(x1, y1);
+
+        //    figure.Segments.Add(
+        //        new BezierSegment(
+        //            new Point(x1, midY),
+        //            new Point(x2, midY),
+        //            new Point(x2, y2),
+        //            true));
+
+        //    PathGeometry geometry = new();
+        //    geometry.Figures.Add(figure);
+
+        //    Path path = new();
+        //    path.Data = geometry;
+        //    path.Stroke = Brushes.Gray;
+        //    path.StrokeThickness = 2;
+
+        //    GraphCanvas.Children.Add(path);
+
+        //    // condition label
+        //    TextBlock txt = new();
+        //    txt.Text = condition;
+        //    txt.Foreground = Brushes.Blue;
+        //    txt.Background = Brushes.White;
+
+        //    Canvas.SetLeft(txt, (x1 + x2) / 2 + 5);
+        //    Canvas.SetTop(txt, midY - 10);
+
+        //    GraphCanvas.Children.Add(txt);
+
+        //    //Polygon arrow = new();
+        //    //arrow.Points = new PointCollection
+        //    //{
+        //    //    new Point(x2 - 5, y2 - 10),
+        //    //    new Point(x2 + 5, y2 - 10),
+        //    //    new Point(x2, y2)
+        //    //};
+
+        //    //arrow.Fill = Brushes.Gray;
+        //    //GraphCanvas.Children.Add(arrow);
+        //}
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
