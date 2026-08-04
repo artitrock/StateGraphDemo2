@@ -128,10 +128,10 @@ namespace StateGraphDemo2
             double y2 = to.Y;
 
             // ระยะเส้นตรงออกจากต้นทาง
-            double exit = 20;
+            double exit = 15;
 
             // ระยะเส้นตรงก่อนเข้าปลายทาง
-            double entry = 20;
+            double entry = 15;
 
             PathFigure figure = new()
             {
@@ -148,8 +148,8 @@ namespace StateGraphDemo2
             // 2. เส้นโค้ง
             figure.Segments.Add(
                 new BezierSegment(
-                    new Point(x1, y1 + exit + 50),
-                    new Point(x2, y2 - entry - 50),
+                    new Point(x1, y1 + exit + 60),
+                    new Point(x2, y2 - entry - 60),
                     new Point(x2, y2 - entry),
                     true));
 
@@ -177,8 +177,16 @@ namespace StateGraphDemo2
                 Padding = new Thickness(2)
             };
 
-            Canvas.SetLeft(txt, (x1 + x2) / 2);
-            Canvas.SetTop(txt, (y1 + y2) / 2 - 20);
+            txt.Measure(new Size(double.PositiveInfinity, double.PositiveInfinity));
+
+            double textWidth = txt.DesiredSize.Width;
+            double textHeight = txt.DesiredSize.Height;
+
+            double textX = (x1 + x2) / 2 - textWidth / 2;
+            double textY = (y1 + y2) / 2 - textHeight / 2;
+
+            Canvas.SetLeft(txt, textX);
+            Canvas.SetTop(txt, textY);
 
             GraphCanvas.Children.Add(txt);
 
